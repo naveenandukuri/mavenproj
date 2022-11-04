@@ -1,2 +1,2 @@
-welcome to CICD Deployment page via jenkins with nexus declarative 
+welcome to CICD Deployment page
 
