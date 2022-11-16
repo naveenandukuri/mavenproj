@@ -1,2 +1,2 @@
-welcome to CICD Deployment page through nexus
+welcome to CICD Deployment page through nexus script
 
