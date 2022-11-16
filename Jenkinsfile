@@ -1,24 +1,10 @@
 node(){
-stage("git"){
-checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/naveenandukuri/mavenproj.git']]])
+  def GIT_URL='$GIT_URL'
+  def GIT_BRANCH='$GIT_BRANCH'
+  
+  properties([parameters([string(defaultValue: 'https://github.com/bhanuprakash678910/mavenproj.git', description: 'GIT_URL', name: 'GIT_URL', trim: false), string(defaultValue: 'master', description: 'GIT_BRANCH', name: 'GIT_BRANCH', trim: false)])])
+  
+  stage("init"){
+    checkout([$class: 'GitSCM', branches: [[name: '*/${GIT_BRANCH}']], extensions: [], userRemoteConfigs: [[url: '${GIT_URL}']]])
+    }
 }
-stage("maven"){
-sh 'mvn package'
-}
-stage("sonar"){
-sh '''mvn sonar:sonar \
-  -Dsonar.projectKey=mavenproj \
-  -Dsonar.host.url=http://3.145.203.146:9000 \
-  -Dsonar.login=54766543c745cefc53889e75bee70acfc6b81908'''
-}
-stage("nexus"){
-nexusArtifactUploader artifacts: [[artifactId: '$BUILD_TIMESTAMP', classifier: '', file: 'webapp/target/webapp.war', type: 'war']], credentialsId: 'NEXUS-CRED', groupId: 'prod', nexusUrl: '3.143.234.50:8081', nexusVersion: 'nexus3', protocol: 'http', repository: 'test', version: '$BUILD_ID'
-}
-stage("tomcat"){
-deploy adapters: [tomcat9(credentialsId: 'TOMCAT-CRED', path: '', url: 'http://18.222.223.30:8080/')], contextPath: 'webapp', onFailure: false, war: '**/*.war'
-}
-}
-
-
-
-
