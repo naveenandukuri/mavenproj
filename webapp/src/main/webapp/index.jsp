@@ -1,2 +1,2 @@
-welcome to CICD Deployment page through Jenkins
+welcome to CICD Deployment page through Jenkin
 
